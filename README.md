@@ -34,8 +34,8 @@
 
 ### use JDE pretrained weight JDE-1088x608
 
-github:`https://github.com/Zhongdao/Towards-Realtime-MOT`
-google download link:`https://drive.google.com/file/d/1nlnuYfGNuHWZztQHXwVZSL_FvfE551pA/view`
+- github:`https://github.com/Zhongdao/Towards-Realtime-MOT`
+- google download link:`https://drive.google.com/file/d/1nlnuYfGNuHWZztQHXwVZSL_FvfE551pA/view`
 
 
 ## Steps
