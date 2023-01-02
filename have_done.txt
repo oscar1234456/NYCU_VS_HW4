@@ -1,0 +1,10 @@
+pip install ffmpeg-python
+conda install pytorch==1.7.0 torchvision==0.8.0 torchaudio==0.7.0 cudatoolkit=11.0 -c pytorch
+nvcc --version
+Cuda compilation tools, release 11.5, V11.5.119
+
+pip install python-ffmpeg-video-streaming
+pip install scipy
+
+python 3.7.15
+pip install -r requirements.txt
