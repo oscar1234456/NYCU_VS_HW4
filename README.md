@@ -13,31 +13,30 @@
 
 
 我有進行過的操作
-針對copy過專案
-- `pip install ffmpeg-python`
-- `conda install pytorch==1.7.0 torchvision==0.8.0 torchaudio==0.7.0 cudatoolkit=11.0 -c pytorch
-nvcc --version`
-- `pip install python-ffmpeg-video-streaming`
-- `pip install scipy`
-- `pip install -r requirements.txt`
+- 針對copy過專案
+  - `pip install ffmpeg-python`
+  - `conda install pytorch==1.7.0 torchvision==0.8.0 torchaudio==0.7.0 cudatoolkit=11.0 -c pytorch
+  nvcc --version`
+  - `pip install python-ffmpeg-video-streaming`
+  - `pip install scipy`
+  - `pip install -r requirements.txt`
 
 
-針對jde (可參考jde github python3.7確認可以使用)
-- `pip install cython`
-- `cd cython_bbox-0.1.3`
-- `python setup.py install`
-- `pip install opencv-python`
-- `pip install mptmetics`
-- `pip install numba`
-- `pip install matplotlib`
-- `pip install lap`
+- 針對jde (可參考jde github python3.7確認可以使用)
+  - `pip install cython`
+  - `cd cython_bbox-0.1.3`
+  - `python setup.py install`
+  - `pip install opencv-python`
+  - `pip install mptmetics`
+  - `pip install numba`
+  - `pip install matplotlib`
+  - `pip install lap`
 
 ### use JDE pretrained weight JDE-1088x608
 
-```
-https://github.com/Zhongdao/Towards-Realtime-MOT
-download link:https://drive.google.com/file/d/1nlnuYfGNuHWZztQHXwVZSL_FvfE551pA/view
-```
+github:`https://github.com/Zhongdao/Towards-Realtime-MOT`
+google download link:`https://drive.google.com/file/d/1nlnuYfGNuHWZztQHXwVZSL_FvfE551pA/view`
+
 
 ## Steps
 
