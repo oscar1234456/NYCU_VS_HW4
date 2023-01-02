@@ -10,6 +10,8 @@
 
 - ffmpeg
 - PyTorch 1.7+
+
+
 我有進行過的操作
 針對copy過專案
 - `pip install ffmpeg-python`
@@ -18,6 +20,8 @@ nvcc --version`
 - `pip install python-ffmpeg-video-streaming`
 - `pip install scipy`
 - `pip install -r requirements.txt`
+
+
 針對jde (可參考jde github python3.7確認可以使用)
 - `pip install cython`
 - `cd cython_bbox-0.1.3`
