@@ -33,17 +33,15 @@
   - `pip install lap`
 
 - 針對yolox (python 3.8.15 pytorch 1.11可使用)
-  下載yolox
-  - `git clone https://github.com/Megvii-BaseDetection/YOLOX.git`
-  下載 apex-master.zip 放到 yolox folder
-  - `https://github.com/NVIDIA/apex`
-  - `cd apex-master`
-  - `conda install -c nvidia cuda`
-  安裝cython_bbox
-  - `cd cython_bbox-0.1.3`
-  - `python setup.py install`
-  
-  
+  - 下載yolox
+    - `git clone https://github.com/Megvii-BaseDetection/YOLOX.git`
+  - 下載 apex-master.zip 放到 yolox folder
+    - `https://github.com/NVIDIA/apex`
+    - `cd apex-master`
+    - `conda install -c nvidia cuda`
+  - 安裝cython_bbox
+    - `cd cython_bbox-0.1.3`
+    - `python setup.py install`
   - `pip install -r requirements_stream.txt`
   - `cd yolox`
   - `python setup.py install`
