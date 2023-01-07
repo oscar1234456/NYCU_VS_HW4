@@ -35,7 +35,7 @@
 - 針對yolox (python 3.8.15 pytorch 1.11可使用)
   - 下載yolox
     - `git clone https://github.com/Megvii-BaseDetection/YOLOX.git`
-  - 下載 apex-master.zip 放到 yolox folder
+  - 下載 apex-master.zip
     - `https://github.com/NVIDIA/apex`
     - `cd apex-master`
     - `conda install -c nvidia cuda`
