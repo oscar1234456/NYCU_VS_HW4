@@ -15,9 +15,6 @@ from YOLOX.yolox.data.datasets import COCO_CLASSES
 from YOLOX.yolox.exp import get_exp
 from YOLOX.yolox.utils import fuse_model, get_model_info, postprocess, vis
 
-
-# from tracker.multitracker import JDETracker
-# from utils import visualization as vis
 from utils.log import logger
 from utils.timer import Timer
 from utils.evaluation import Evaluator
@@ -29,6 +26,7 @@ traker=None
 cam,frame_rate=None,None
 bool_video=None
 w,h=None,None
+conf_plot = None
 
 app = Flask(__name__, template_folder='./')
 
@@ -72,33 +70,18 @@ def eval_seq():
         if(bool_video):
             img0 = cv2.resize(img0, (w, h))
 
-        # if frame_id %2 != 0:
-        if frame_id %2 < -1:
-            online_im = vis.plot_tracking(img0, online_tlwhs, online_ids, frame_id=frame_id)
-            ret, jpeg = cv2.imencode('.jpg', online_im)
-            frame = jpeg.tobytes()
-        else:    
-            img, _, _, _ = letterbox(img0, width=w, height=h)
-            outputs, img_info = predictor.inference(img)
-            
-            # outputs = outputs.cpu()
-            output = outputs[0].cpu()
-            bboxes = output[:, 0:4] / img_info["ratio"]
-            cls = output[:, 6]
-            scores = output[:, 4] * output[:, 5]
+        img, _, _, _ = letterbox(img0, width=w, height=h)
+        outputs, img_info = predictor.inference(img)
+        
+        output = outputs[0].cpu()
+        bboxes = output[:, 0:4] / img_info["ratio"]
+        cls = output[:, 6]
+        scores = output[:, 4] * output[:, 5]
+        
+        online_im = vis(img, bboxes, scores, cls, conf_plot, COCO_CLASSES)
 
-            # online_tlwhs = list(bboxes[scores > 0.75])
-            # online_ids = list(cls[scores > 0.75])
-
-            # save results
-            # results.append((frame_id + 1, online_tlwhs, online_ids))
-            
-            
-            # online_im = vis.plot_tracking(img0, online_tlwhs, online_ids, frame_id=frame_id)
-            online_im = vis(img, bboxes, scores, cls, 0.75, COCO_CLASSES)
-
-            ret, jpeg = cv2.imencode('.jpg', online_im)
-            frame =  jpeg.tobytes()
+        ret, jpeg = cv2.imencode('.jpg', online_im)
+        frame =  jpeg.tobytes()
 
         frame_id += 1
         
@@ -211,8 +194,8 @@ class Predictor(object):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog='demo_choose.py')
     parser.add_argument('--cfg', type=str, default='cfg/yolov3_1088x608.cfg', help='cfg file path')
-    # parser.add_argument('--weights', type=str, default='jde.1088x608.uncertainty.pt', help='path to weights file')
     parser.add_argument('--conf-thres', type=float, default=0.5, help='object confidence threshold')
+    parser.add_argument('--conf-plot', type=float, default=0.5, help='minimum confidence threshold to plot')
     parser.add_argument('--nms-thres', type=float, default=0.4, help='iou threshold for non-maximum suppression')
     parser.add_argument('--min-box-area', type=float, default=200, help='filter out tiny boxes')
     parser.add_argument('--track-buffer', type=int, default=30, help='tracking buffer')
@@ -276,6 +259,7 @@ if __name__ == '__main__':
         
 
     w, h = opt.tsize
+    conf_plot = opt.conf_plot
 
     if(opt.input_video=="webcam0"):
         cam=cv2.VideoCapture(0)
@@ -295,8 +279,6 @@ if __name__ == '__main__':
         imheight = opt.tsize[1]
         
         w, h = get_size(vw, vh, imwidth, imheight)
-    
-    # tracker = JDETracker(opt, frame_rate)
     
     exp = get_exp(opt.exp_file, opt.name)
 
