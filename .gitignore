@@ -1,1 +1,5 @@
 .idea
+YOLOX
+utils/__pycache__/
+hls
+cython_bbox-0.1.3

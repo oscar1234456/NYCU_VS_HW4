@@ -64,6 +64,7 @@
 1. Go to project directory
 2. Execute `python http_server`
 3. Execute `python server_new.py --input-video 0`(with webcam0) or `python server_new.py --input-video ./hw3_test.mp4`(with local video)
+   - YOLOX Version: python server_yolox.py -f ./YOLOX/exps/default/yolox_s.py -c ./YOLOX/weights/yolox_s.pth --device gpu --input-video webcam0 (with webcam0)
 4. Execute `python stream.py`
 5. Open `http://<server_ip>:<http_port>/index.html` (`<server_ip>` and `http_port` are defined in `config.json`).
 

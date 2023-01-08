@@ -5,7 +5,9 @@ Summary: Standalone cython_bbox
 Home-page: https://github.com/samson-wang/cython_bbox.git
 Author: Samson Wang
 Author-email: samson.c.wang@gmail.com
+License: UNKNOWN
 Keywords: cython_bbox
+Platform: UNKNOWN
 Description-Content-Type: text/markdown
 
 # cython_bbox
@@ -31,3 +33,5 @@ overlaps = bbox_overlaps(
     )
 
 ```
+
+

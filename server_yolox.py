@@ -77,7 +77,7 @@ def eval_seq():
             online_im = vis.plot_tracking(img0, online_tlwhs, online_ids, frame_id=frame_id)
             ret, jpeg = cv2.imencode('.jpg', online_im)
             frame = jpeg.tobytes()
-        else:    
+        else:
             img, _, _, _ = letterbox(img0, width=w, height=h)
             outputs, img_info = predictor.inference(img)
             
@@ -278,6 +278,7 @@ if __name__ == '__main__':
     w, h = opt.tsize
 
     if(opt.input_video=="webcam0"):
+        print("enter webcam0 >> setting webcam0")
         cam=cv2.VideoCapture(0)
         bool_video=False
         frame_rate = int(round(cam.get(cv2.CAP_PROP_FPS)))
