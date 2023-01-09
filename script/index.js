@@ -1,10 +1,18 @@
+// console.log("1234566")
+
 // UI BEGIN
 const video = document.getElementById('video');
 const videoControls = document.getElementById('video-controls');
 const videoContainer = document.getElementById('video-container');
+const classSelectMenu = document.getElementById('class-select-button');
 
 const videoWorks = !!document.createElement('video').canPlayType;
+
+let selected_element = [];
+
+// console.log("enter in index.js")
 if (videoWorks) {
+    console.log("test for videoWorks")
     video.controls = false;
     videoControls.classList.remove('hidden');
 }
@@ -12,6 +20,7 @@ if (videoWorks) {
 // Play/Pause BEGIN
 const playButton = document.getElementById('play');
 function togglePlay() {
+    console.log("toggle Play")
     if (video.paused || video.ended) {
         video.play();
     }
@@ -125,7 +134,7 @@ function updateVolume() {
     }
     video.volume = volume.value;
 }
-volume.addEventListener('input', updateVolume);
+// volume.addEventListener('input', updateVolume);
 
 function updateVolumeIcon() {
     volumeIcons.forEach(icon => {
@@ -157,7 +166,7 @@ function toggleMute() {
         volume.value = volume.dataset.volume;
     }
 }
-volumeButton.addEventListener('click', toggleMute);
+// volumeButton.addEventListener('click', toggleMute);
 // Volume control END
 // UI END
 
@@ -175,7 +184,35 @@ function shutdown() {
     xmlHttp.open('GET', `http://${server_ip}:${flask_port}/shutdown`, true);
     xmlHttp.send(null);
 }
-shutdownButton.addEventListener('click', shutdown);
+// shutdownButton.addEventListener('click', shutdown);
+
+// Listen
+function getNowObjectCls(event){
+    console.log("click class-select-menu");
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open('GET', `http://${server_ip}:${flask_port}/get_cls`, true);
+    xmlHttp.send(null);
+    xmlHttp.onload = function () {
+        var buttonGroup = document.getElementById('class-select-button-group');
+        var buttonGroupSelected = document.getElementById('class-select-button-group-selected');
+        buttonGroup.replaceChildren()
+        JSON.parse(xmlHttp.responseText).target.forEach( function (cls){
+            var node = document.createElement('button');
+            node.className = "select-cls-button"
+            node.innerHTML = `${cls}`;
+            node.style.backgroundColor = "#4CAF50";
+            buttonGroup.appendChild(node);
+        });
+
+        // var today = new Date();
+        // node.innerHTML = `Detects #${JSON.parse(xmlHttp.responseText).target} @ ${today.timeNow()}`;
+        // console.log(JSON.parse(xmlHttp.responseText).target)
+        // node.setAttribute('class', 'elem-cls')
+        // logBox.insertBefore(node, logBox.firstChild);
+    }
+    event.preventDefault();
+}
+classSelectMenu.addEventListener('click', getNowObjectCls);
 // Shutdown END
 
 // Deselect START
@@ -227,3 +264,8 @@ shutdownButton.addEventListener('click', shutdown);
 Date.prototype.timeNow = function () {
     return ((this.getHours() < 10) ? '0' : '') + this.getHours() + ':' + ((this.getMinutes() < 10) ? '0' : '') + this.getMinutes() + ':' + ((this.getSeconds() < 10) ? '0' : '') + this.getSeconds();
 }
+
+
+
+
+
