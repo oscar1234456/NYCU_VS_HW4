@@ -187,7 +187,7 @@ function shutdown() {
 // shutdownButton.addEventListener('click', shutdown);
 
 // Listen
-function getNowObjectCls(event){
+function getNowObjectCls(){
     console.log("click class-select-menu");
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open('GET', `http://${server_ip}:${flask_port}/get_cls`, true);
@@ -197,11 +197,14 @@ function getNowObjectCls(event){
         var buttonGroupSelected = document.getElementById('class-select-button-group-selected');
         buttonGroup.replaceChildren()
         JSON.parse(xmlHttp.responseText).target.forEach( function (cls){
-            var node = document.createElement('button');
-            node.className = "select-cls-button"
-            node.innerHTML = `${cls}`;
-            node.style.backgroundColor = "#4CAF50";
-            buttonGroup.appendChild(node);
+            if (!selected_element.includes(cls)){
+                var node = document.createElement('button');
+                node.className = `${cls}`
+                node.innerHTML = `${cls}`;
+                node.onclick = selectTrackObject;
+                node.style.backgroundColor = "#4CAF50";
+                buttonGroup.appendChild(node);
+            }
         });
 
         // var today = new Date();
@@ -210,9 +213,57 @@ function getNowObjectCls(event){
         // node.setAttribute('class', 'elem-cls')
         // logBox.insertBefore(node, logBox.firstChild);
     }
-    event.preventDefault();
+    // event.preventDefault();
 }
-classSelectMenu.addEventListener('click', getNowObjectCls);
+setInterval(getNowObjectCls, 200)
+
+
+function selectTrackObject(event){
+    console.log("click object from buttonGroup list");
+    const select_button_value = event.target.value;
+    var xmlHttp = new XMLHttpRequest();
+   xmlHttp.open(
+        'GET',
+        `http://${server_ip}:${flask_port}/control_cls?select_cls=` + select_button_value + ',' +  "act=select",
+        true
+    );
+    xmlHttp.send(null);
+    xmlHttp.onload = function () {
+        document.getElementById(select_button_value).remove();
+
+        var buttonGroupSelected = document.getElementById('class-select-button-group-selected');
+        var node = document.createElement('button');
+        node.className = `${select_button_value}`
+        node.innerHTML = `${select_button_value}`;
+        node.onclick = deselectTrackObject;
+        node.style.backgroundColor = "#4CAF50";
+        buttonGroupSelected.appendChild(node);
+
+        selected_element.push(select_button_value)
+    }
+
+
+}
+
+function deselectTrackObject(event){
+    console.log("click object from selected buttonGroup list");
+    const select_button_value = event.target.value;
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open(
+        'GET',
+        `http://${server_ip}:${flask_port}/control_cls?select_cls=` + select_button_value + ',' +  "act=deselect",
+        true
+    );
+    xmlHttp.send(null);
+    xmlHttp.onload = function () {
+        document.getElementById(select_button_value).remove();
+        selected_element.remove(select_button_value);
+    }
+}
+
+
+
+
 // Shutdown END
 
 // Deselect START

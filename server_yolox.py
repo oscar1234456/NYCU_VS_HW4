@@ -31,6 +31,7 @@ bool_video=None
 w,h=None,None
 
 public_cls = list() #裝目前偵測到的cls類別
+select_cls_list = list() #裝目前選定的cls類別
 
 app = Flask(__name__, template_folder='./')
 
@@ -100,7 +101,7 @@ def eval_seq():
             
             # online_im = vis.plot_tracking(img0, online_tlwhs, online_ids, frame_id=frame_id)
             # cls:是此frame所含的object class
-            online_im, detect_cls_list = vis(img, bboxes, scores, cls, 0.75, COCO_CLASSES)
+            online_im, detect_cls_list = vis(img, bboxes, scores, cls, 0.75, COCO_CLASSES, select_cls_list)
             # print(f"type: {type(cls)}")
             public_cls = detect_cls_list.copy()
             print(f"now public_cls:{public_cls}")
@@ -123,6 +124,19 @@ def eval_seq():
 def add_header(response):
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
+
+@app.route('/control_cls')
+def control_cls():
+    select_cls = request.args.get('select_cls')
+    # act: select -> 選取, deselect -> 取消
+    act = request.args.get('act')
+    if act == "select":
+        cls_id = COCO_CLASSES.index(select_cls)
+        select_cls_list.append(cls_id)
+    else:
+        cls_id = COCO_CLASSES.index(select_cls)
+        select_cls_list.remove(cls_id)
+
 @app.route('/video_feed')
 def video_feed():
     # 回傳影片資訊
