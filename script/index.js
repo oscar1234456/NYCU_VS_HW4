@@ -187,7 +187,7 @@ function shutdown() {
 // shutdownButton.addEventListener('click', shutdown);
 
 // Listen
-function getNowObjectCls(event){
+function getNowObjectCls(){
     console.log("click class-select-menu");
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open('GET', `http://${server_ip}:${flask_port}/get_cls`, true);
@@ -210,9 +210,10 @@ function getNowObjectCls(event){
         // node.setAttribute('class', 'elem-cls')
         // logBox.insertBefore(node, logBox.firstChild);
     }
-    event.preventDefault();
+    // event.preventDefault();
 }
-classSelectMenu.addEventListener('click', getNowObjectCls);
+setInterval(getNowObjectCls, 800)
+// classSelectMenu.addEventListener('click', getNowObjectCls);
 // Shutdown END
 
 // Deselect START

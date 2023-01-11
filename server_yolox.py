@@ -45,7 +45,7 @@ def shutdown_server():
 
 
 def letterbox(img, height=608, width=1088, color=(127.5, 127.5, 127.5)):  # resize a rectangular image to a padded rectangular 
-    print("in letterbox")
+    # print("in letterbox")
     shape = img.shape[:2]  # shape = [height, width]
     ratio = min(float(height)/shape[0], float(width)/shape[1])
     new_shape = (round(shape[1] * ratio), round(shape[0] * ratio)) # new_shape = [width, height]
@@ -103,7 +103,7 @@ def eval_seq():
             online_im, detect_cls_list = vis(img, bboxes, scores, cls, 0.75, COCO_CLASSES)
             # print(f"type: {type(cls)}")
             public_cls = detect_cls_list.copy()
-            print(f"now public_cls:{public_cls}")
+            # print(f"now public_cls:{public_cls}")
             ret, jpeg = cv2 .imencode('.jpg', online_im)
             frame =  jpeg.tobytes()
 
