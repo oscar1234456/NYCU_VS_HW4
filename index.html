@@ -119,17 +119,17 @@
     // streaming ===============================================================
     var videoTag = document.getElementById('video');
     var videoSrc = 'hls/hls.m3u8';
-    var hls = new Hls();
-
+    var hls = new Hls();//create Hls object
+    //check browser if HLS.js is supported
     if (Hls.isSupported()) {
         // 此瀏覽器可以解析Hls檔案
         console.log("Hls is supported!!!!!")
-        hls.loadSource(videoSrc);
-        hls.attachMedia(videoTag);
+        hls.loadSource(videoSrc);//load input video source(.m3u8)
+        hls.attachMedia(videoTag);//bind with html video element
         hls.on(Hls.Events.MANIFEST_LOADED, createDropdownMenu);
     } else if (videoTag.canPlayType('application/vnd.apple.mpegurl')) {
         videoTag.src = videoSrc;
-    }
+    }//check for native browser HLS support
 
     function setLevel(elem) {
         try {

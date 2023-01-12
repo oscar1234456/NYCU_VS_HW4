@@ -25,15 +25,19 @@ import utils.datasets as datasets
 import torch
 from utils.utils import *
 
+
+from flask_cors import CORS
+from flask_cors import cross_origin
 traker=None
 cam,frame_rate=None,None
 bool_video=None
 w,h=None,None
 
 public_cls = list() #裝目前偵測到的cls類別
+select_cls_list = list() #裝目前選定的cls類別
 
 app = Flask(__name__, template_folder='./')
-
+CORS(app)
 
 def shutdown_server():
     func = request.environ.get('werkzeug.server.shutdown')
@@ -100,7 +104,7 @@ def eval_seq():
             
             # online_im = vis.plot_tracking(img0, online_tlwhs, online_ids, frame_id=frame_id)
             # cls:是此frame所含的object class
-            online_im, detect_cls_list = vis(img, bboxes, scores, cls, 0.75, COCO_CLASSES)
+            online_im, detect_cls_list = vis(img, bboxes, scores, cls, 0.75, COCO_CLASSES, select_cls_list)
             # print(f"type: {type(cls)}")
             public_cls = detect_cls_list.copy()
             # print(f"now public_cls:{public_cls}")
@@ -123,6 +127,32 @@ def eval_seq():
 def add_header(response):
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
+
+
+
+@app.route('/control_cls')
+@cross_origin()
+def control_cls():
+    select_cls = request.args.get('select_cls')
+    # act: select -> 選取, deselect -> 取消
+    print("select_cls: ",select_cls)
+    act = request.args.get('act')
+    print("act: ",act)
+    if act == "select":
+        
+        cls_id = COCO_CLASSES.index(select_cls)
+        print("select_cls_id ",cls_id)
+        select_cls_list.append(cls_id)
+        print("select_cls_list: ",select_cls_list)
+    else:
+
+        cls_id = COCO_CLASSES.index(select_cls)
+        print("diselect_cls_id ",cls_id)
+        if(select_cls_list and cls_id in select_cls_list):
+            select_cls_list.remove(cls_id)
+        print("select_cls_list: ",select_cls_list)
+    return json.dumps({'success':True, 'target':select_cls}), 200, {'ContentType': 'appliccation/json'}
+
 @app.route('/video_feed')
 def video_feed():
     # 回傳影片資訊
@@ -204,7 +234,7 @@ class Predictor(object):
                 outputs, self.num_classes, self.confthre,
                 self.nmsthre, class_agnostic=True
             )
-            logger.info("Infer time: {:.4f}s".format(time.time() - t0))
+            # logger.info("Infer time: {:.4f}s".format(time.time() - t0))
         return outputs, img_info
     
     def visual(self, output, img_info, cls_conf=0.35):

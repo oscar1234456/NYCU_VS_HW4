@@ -18,15 +18,19 @@ def hls(*res):
     codec_options = {
         'g': 10
     }
+    #It creates a playlist file, and one or more segment files automatically.
+    #The output filename specifies the playlist filename.
+    ####
     hls = video.hls(Formats.h264(video='libx264', audio='aac', **codec_options), hls_time=1)
-    hls.representations(*res)
-    hls.output(os.path.join(hls_dir, 'hls.m3u8'))
-
+    hls.representations(*res)#create according to specified resolution 
+    hls.output(os.path.join(hls_dir, 'hls.m3u8'))#output to specified local folder
+    ###
 
 if __name__ == '__main__':
     config = json.load(open('config.json', 'r'))
+    # Opening a Resource
     video = ffmpeg_streaming.input(f'http://localhost:{config["flask_port"]}/video_feed')
-
+    #Specify the value of kilo bite rate and size for each stream explicitly.
     _144p  = Representation(Size(256, 144), Bitrate(95*1024, 64*1024))
     _240p  = Representation(Size(426, 240), Bitrate(150*1024, 94*1024))
     _360p  = Representation(Size(640, 360), Bitrate(276*1024, 128*1024))
