@@ -205,6 +205,8 @@ function getNowObjectCls(){
                 node.onclick = selectTrackObject;
                 node.style.backgroundColor = "#4CAF50";
                 buttonGroup.appendChild(node);
+            }else{
+                console.log("without this cls: "+cls)
             }
         });
 

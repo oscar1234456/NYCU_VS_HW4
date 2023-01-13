@@ -162,7 +162,13 @@ def video_feed():
 def get_cls():
     global public_cls
     # public_cls= ["1","2"]
-    return json.dumps({'success':True, 'target':public_cls}), 200, {'ContentType': 'appliccation/json'}
+    #print("public_cls ",public_cls)
+    #print("select_cls_list ",select_cls_list)
+    temp = set()    
+    for e in select_cls_list:
+        temp.add(COCO_CLASSES[e])
+    #print("temp ",temp)
+    return json.dumps({'success':True, 'target':list(set(public_cls)-set(temp))}), 200, {'ContentType': 'appliccation/json'}
 
 @app.route('/shutdown', methods=['GET'])
 def shutdown():
